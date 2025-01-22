@@ -224,8 +224,8 @@ export function calculateCoffeeStats(coffeeConsumptionHistory) {
 	}
 
 	const days = Object.keys(dailyStats).length;
-	const dailyCaffeine = {};
-	for (const [date, stats] of Object.entries(dailyStats)) {
+
+	for (const [, stats] of Object.entries(dailyStats)) {
 		if (stats.caffeine > 0) {
 			totalCaffeine += stats.caffeine;
 			totalDaysWithCoffee += 1; // Count days when caffeine was consumed
@@ -235,7 +235,7 @@ export function calculateCoffeeStats(coffeeConsumptionHistory) {
 	// Calculate average daily caffeine and average daily cost
 	const averageDailyCaffeine = totalDaysWithCoffee > 0 ? (totalCaffeine / totalDaysWithCoffee).toFixed(2) : 0;
 	const averageDailyCost = totalDaysWithCoffee > 0 ? (totalCost / totalDaysWithCoffee).toFixed(2) : 0;
-	console.log(totalCost, typeof totalCost);
+
 	return {
 		daily_caffeine: averageDailyCaffeine,
 		daily_cost: averageDailyCost,
