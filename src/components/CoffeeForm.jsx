@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { coffeeOptions } from "../utils";
+import Modal from "./Modal";
+import Authentication from "./Authentication";
 
-export default function CoffeeForm() {
+// eslint-disable-next-line react/prop-types
+export default function CoffeeForm({ isAuthenticated }) {
+	const [showModal, setShowModal] = useState(false);
 	const [selectedCoffee, setSelectedCoffee] = useState(null);
 	const [showCoffeeType, setShowCoffeeType] = useState(false);
 	const [coffeeCost, setCoffeeCost] = useState(0);
@@ -9,11 +13,21 @@ export default function CoffeeForm() {
 	const [mins, setMins] = useState(0);
 
 	function handleSubmit() {
+		if (!isAuthenticated) {
+			setShowModal(true);
+			return;
+		}
 		console.log(selectedCoffee, coffeeCost, hours, mins);
 	}
 
 	return (
 		<>
+			{showModal && (
+				<Modal handleCloseModal={() => setShowModal(false)}>
+					<Authentication />
+				</Modal>
+			)}
+
 			{/* Header */}
 			<div className="section-header">
 				<i className="fa-solid fa-pencil"></i>
