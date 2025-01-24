@@ -1,11 +1,6 @@
 /* eslint-disable react/prop-types */
-import {
-	calculateCoffeeStats,
-	calculateCurrentCaffeineLevel,
-	coffeeConsumptionHistory,
-	getTopThreeCoffees,
-	statusLevels,
-} from "../utils";
+import { useAuth } from "../context/authContext";
+import { calculateCoffeeStats, calculateCurrentCaffeineLevel, getTopThreeCoffees, statusLevels } from "../utils";
 
 function StatsCard(props) {
 	const { lg, title, children } = props;
@@ -18,9 +13,10 @@ function StatsCard(props) {
 }
 
 export default function Modal() {
-	const stats = calculateCoffeeStats(coffeeConsumptionHistory);
+	const { globalData } = useAuth();
+	const stats = calculateCoffeeStats(globalData);
 
-	const caffeineLevel = calculateCurrentCaffeineLevel(coffeeConsumptionHistory);
+	const caffeineLevel = calculateCurrentCaffeineLevel(globalData);
 	const warningLevel =
 		caffeineLevel < statusLevels["low"].maxLevel
 			? "low"
@@ -46,7 +42,7 @@ export default function Modal() {
 								background: statusLevels[warningLevel].background,
 							}}
 						>
-							Low
+							{warningLevel}
 						</h5>
 						<p>{statusLevels[warningLevel].description}</p>
 					</div>
@@ -80,7 +76,7 @@ export default function Modal() {
 						</tr>
 					</thead>
 					<tbody>
-						{getTopThreeCoffees(coffeeConsumptionHistory).map((coffee) => (
+						{getTopThreeCoffees(globalData).map((coffee) => (
 							<tr key={coffee.coffeeName}>
 								<td>{coffee.coffeeName}</td>
 								<td>{coffee.count}</td>
